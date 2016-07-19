@@ -1,6 +1,4 @@
 ===============Electricity
-
-
 ===============EE
 understanding of power sequencing
 power ramp up-time
