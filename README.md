@@ -1,5 +1,3 @@
 # low_level
-
-brass tacks hack-fu
-
+brass tacks
 bookmark: low_level.txt
