@@ -2,14 +2,11 @@
 
 
 ===============EE
-
 understanding of power sequencing
 power ramp up-time
 clock stabilization time
 processor reset/initialization delay
-
 ===============Electronics
-
 Linear Circuits: DC Analysis
 Linear Circuits: AC Analysis
 
@@ -30,15 +27,12 @@ AC circuit analysis
   frequency responses,
   Bode plots
 
-
-
 ===============Materials
   Materials | Solid State Diffusion
   Dislocations Explain Plastic Deformation | Stress Strain
   Creep Deformation | Ductile-to-Brittle Transition
   Toughness | Fatigue 
   Semi-Conductors
-
 ===============Linux Device Drivers
 ==device drivers
 ==building and running modules
@@ -54,7 +48,6 @@ AC circuit analysis
 ==network drivers
 ==peripheral buses
 ==physical layout of kernal source
-
 ===============Embedded Linux
 ==embedded linux
 ==conccepts
@@ -120,8 +113,6 @@ putting it all together
   Compiler: Syntax Analysis
   Compiler: Code Generation
   Operating System
-
-
 ===============Structures
   Digital Circuits
     Information
@@ -147,23 +138,12 @@ putting it all together
     Concurrency and Synchronization
     System-level Communication
     Parallel Processing
-
-
-
-
-
-
 ===============Embedded C++
-
-
-
 ===============Serial Communication
 RS232
 I2C
 SPI
 UART
-
-
 ===============VHDL
 Very high-level description language
 
@@ -179,7 +159,6 @@ Generic
 Process
 
 Entity:
-
 ENTITY mux    IS
   PORT ( a, b, c, d : IN BIT;
          s0, s1     : IN BIT;
@@ -187,7 +166,6 @@ ENTITY mux    IS
 END mux;
 
 Architectures:
-
 ARCHITECTURE dataflow OF mux IS
   SIGNAL select : INTEGER;
 BEGIN
@@ -263,7 +241,6 @@ ARCHITECTURE sequential OF mux IS
 
 
 Configuration Statements:
-
 CONFIGURATION muxcon1 OF mux IS
   FOR netlist
     FOR U1,U2 :
@@ -278,7 +255,6 @@ END muxcon1;
 
 
 Power of Configurations:
-
 CONFIGURATION muxcon2 OF mux IS
   FOR dataflow
   END FOR;
@@ -307,8 +283,6 @@ VHSIC HDL
 Very high speed integrated circuit hardware description language
 Behavior Modeling
 
-
-
 SimpleObject.vhdl
 Library ieee;
 use ieee.std_logic1164.all;
@@ -318,7 +292,6 @@ Port ( A, B, C : IN STD_LOGIC;
        Resul t : OUT STD_LOGIC
       );
 End SimpleObject
-
 ===============Verilog
 ==verilog
 ==digital design (Verilog HDL)
@@ -363,14 +336,12 @@ Resource considerations:
 ==system architecture
 document system architecture
 
-
 Driver Model
   spi.open()
   spi_open()
   SpiOpen(WITH_LOCK)
   spi.ioctl_changeFrequency(THIRTY_MHz)
   SpiIoctl(kChangeFrequency, THIRTY_MHz)
-
 
 Hardware Interfaces
   SPI
@@ -388,16 +359,9 @@ Adapter (Consistent interface for client)
   Read
   Write
   IOCTL
-
-
-x
-
-
-x
 ==integration
 hardware/software integration
 ==outputs, inputs, timers
-
 ==task maangements
 interrupts
 ==communcating with peripherals
@@ -411,9 +375,6 @@ custom solution
 ==optimize
 reducing consumption of RAM, code space, processor cycles
 ==math
-
-
-
 Identitying Fast and Slow Operations
   compiler and processor
   -           = fast
@@ -438,7 +399,6 @@ replace the modulo math with a cheap (single instruction) bitwise logic operatio
   }
 
 ==reduce power consumption
-
 ===============Embedded Systems
 Computer to Electrical:
 analog to digital converter (ADC) and digital to analog converter (DAC)
