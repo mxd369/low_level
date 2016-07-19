@@ -1,0 +1,469 @@
+===============Electricity
+
+
+===============EE
+
+understanding of power sequencing
+power ramp up-time
+clock stabilization time
+processor reset/initialization delay
+
+===============Electronics
+
+Linear Circuits: DC Analysis
+Linear Circuits: AC Analysis
+
+Resistive cricuit methods:
+  (node analysis,
+  mesh analysis,
+  Ohm's Law,
+  Kirchhoff's Voltage,
+  Current Laws)
+
+circuits(and their behavior):
+  RC
+  RL
+  RLC
+
+AC circuit analysis
+  impedences,
+  frequency responses,
+  Bode plots
+
+
+
+===============Materials
+  Materials | Solid State Diffusion
+  Dislocations Explain Plastic Deformation | Stress Strain
+  Creep Deformation | Ductile-to-Brittle Transition
+  Toughness | Fatigue 
+  Semi-Conductors
+
+===============Linux Device Drivers
+==device drivers
+==building and running modules
+==enhanced char driver operations
+==flow of time
+==memory
+==hardware management
+==interrupt handling
+==judicious use of data types
+==kmod and advanced modularization
+==loading block drivers
+==mmap and DMA
+==network drivers
+==peripheral buses
+==physical layout of kernal source
+
+===============Embedded Linux
+
+===============Embedded Firmware
+UEFI
+BIOS
+Fast Boot
+RTOS
+Assembly Language
+
+Intel IoT
+EDK II-based firmware for Intel Architecture
+
+  Bootloader
+    Firmware stack: components in a firmware solution
+	PI & UEFI: platform intialization/unified extensible firmware interface
+	BIOS: basic input/output systems
+	FSP: firmware support package
+	Microprocessor, CPU chips
+	I/O
+	Soc, SOC, SIP
+	Southbride, northbridge, companion chips
+
+embedded engineer = software engineer turning into a hardware engineer
+firmware engineer = hardware engineer turning into a software engineer
+
+signal strength, timing, voltage, data structure, algorithm, modularity
+
+Firmware: the layer of software between the hardware and the operating system (OS), with the main purpose to initialize and abstract enough hardware so that the operating systems and their drivers can further configure the hardware to its full functionality. To make embedded systems run faster and be more robust, the relationship between the firmware and the OS is transitioning from isolating themselves from each other to cooperating with each other.
+
+One of the most important and challenging jobs that a firmware engineer does is
+to make a new circuit board work when it is first manufactured.
+
+==firmware stacks for embedded systems
+==intel firmware support package
+==building coreboot (intel FSP)
+==chrome book firmware internals
+==intel FSP and UEFI integration
+==builidng firmware for quark processors
+putting it all together
+===============Computer
+  Boolean Functions/Gate Logic
+  Boolean Arithmetic/Arithmetic Logic Unit
+  Memory
+  Machine Language
+  Computer Architecture
+  Assembler
+  VM: Arithmetic
+  VM: Control
+  Programming Language
+  Compiler: Syntax Analysis
+  Compiler: Code Generation
+  Operating System
+
+
+===============Structures
+  Digital Circuits
+    Information
+    Abstraction
+	CMOS
+	Combinational Logic
+	Sequential Logic
+	Finite State Machines
+	Performace Measures
+	Design Tradeoffs
+  Architecture
+    Designing an Instruction Set
+    Assembly Language Models of Computation
+    Compilers
+    Procedures and Stacks
+    Beta
+    Caches and Memory Hierarchy
+  Organization
+    Pipelining Beta
+    Virtual Memory
+    Virtualizing Processor
+    Devices and Interrupts
+    Concurrency and Synchronization
+    System-level Communication
+    Parallel Processing
+
+
+
+
+
+
+===============Embedded C++
+
+
+
+===============Serial Communication
+RS232
+I2C
+SPI
+UART
+
+
+===============VHDL
+Very high-level description language
+
+-Entity
+-Architecture
+-Configuration
+-Package
+Driver
+==VHDL
+BUS
+Attribute
+Generic
+Process
+
+Entity:
+
+ENTITY mux    IS
+  PORT ( a, b, c, d : IN BIT;
+         s0, s1     : IN BIT;
+         x,         : OUT BIT);
+END mux;
+
+Architectures:
+
+ARCHITECTURE dataflow OF mux IS
+  SIGNAL select : INTEGER;
+BEGIN
+  select <= 0 WHEN s0 = ‘0’ AND s1 = ‘0’ ELSE
+            1 WHEN s0 = ‘1’ AND s1 = ‘0’ ELSE
+            2 WHEN s0 = ‘0’ AND s1 = ‘1’ ELSE
+            3;
+
+  x <= a AFTER 0.5 NS WHEN select = 0 ELSE
+       b AFTER 0.5 NS WHEN select = 1 ELSE
+       c AFTER 0.5 NS WHEN select = 2 ELSE
+       d AFTER 0.5 NS;
+
+END dataflow;
+
+
+Concurrent Signal Assignment(architecture behave):
+select <= 0 WHEN s0 = ‘0’ AND s1 = ‘0’ ELSE
+          1 WHEN s0 = ‘1’ AND s1 = ‘0’ ELSE
+          2 WHEN s0 = ‘0’ AND s1 = ‘1’ ELSE
+          3;
+
+
+Structural Designs:
+    ARCHITECTURE netlist OF mux IS
+      COMPONENT andgate
+        PORT(a, b, c : IN bit; c : OUT BIT);
+      END COMPONENT;
+      COMPONENT inverter
+        PORT(in1 : IN BIT; x : OUT BIT);
+      END COMPONENT;
+      COMPONENT orgate
+        PORT(a, b, c, d : IN bit; x : OUT BIT);
+      END COMPONENT;
+  SIGNAL s0_inv, s1_inv, x1, x2, x3, x4 : BIT;
+  BEGIN
+    U1 : inverter(s0, s0_inv);
+    U2 : inverter(s1, s1_inv);
+    U3 : andgate(a, s0_inv, s1_inv, x1);
+    U4 : andgate(b, s0, s1_inv, x2);
+    U5 : andgate(c, s0_inv, s1, x3);
+    U6 : andgate(d, s0, s1, x4);
+    U7 : orgate(x2 => b, x1 => a, x4 => d, x3 => c, x => x);
+    END netlist;
+
+
+Sequential Behavior:
+ARCHITECTURE sequential OF mux IS
+    (a, b, c, d, s0, s1 )
+    VARIABLE sel : INTEGER;
+    BEGIN
+      IF s0 = ‘0’ and s1 = ‘0’ THEN
+        sel := 0;
+      ELSIF s0 = ‘1’ and s1 = ‘0’ THEN
+        sel := 1;
+      ELSIF s0 = ‘0’ and s1 = ‘0’ THEN
+        sel := 2;
+      ELSE
+        sel := 3;
+      END IF;
+      CASE sel IS
+        WHEN 0 =>
+          x <= a;
+        WHEN 1 =>
+          x <= b;
+        WHEN 2 =>
+          x <= c;
+        WHEN OTHERS =>
+          x <= d;
+        END CASE;
+    END PROCESS;
+    END sequential;
+
+
+Configuration Statements:
+
+CONFIGURATION muxcon1 OF mux IS
+  FOR netlist
+    FOR U1,U2 :
+      inverter USE ENTITY WORK.myinv(version1);
+    END FOR;
+    FOR U3,U4,U5,U6 : andgate USE ENTITY WORK.myand(version1);
+    END FOR;
+    FOR U7 : orgate USE ENTITY WORK.myor(version1);
+    END FOR;
+  END FOR;
+END muxcon1;
+
+
+Power of Configurations:
+
+CONFIGURATION muxcon2 OF mux IS
+  FOR dataflow
+  END FOR;
+  END muxcon2;
+
+==behavioral modeling
+==sequential processing
+==data types
+==subprograms & packages
+==predefined attributes
+==configurations
+==advanced
+==synthesis
+==VHDL synthesis
+==high-level design flow
+==top-level system design
+==CPU: synthesis description
+==CPU: synthesis description
+==CPU: RTL simulation
+==CPU Design: synthesis results
+==place and route
+==CPU: vital simulation
+==At speed debugging Techniques
+===============VHDL Basics
+VHSIC HDL
+Very high speed integrated circuit hardware description language
+Behavior Modeling
+
+
+
+SimpleObject.vhdl
+Library ieee;
+use ieee.std_logic1164.all;
+
+Entity SimpleObject is
+Port ( A, B, C : IN STD_LOGIC;
+       Resul t : OUT STD_LOGIC
+      );
+End SimpleObject
+
+===============Verilog
+==verilog
+==digital design (Verilog HDL)
+==Hierarchical modeling concepts
+==basic concepts
+==modules and ports
+==gate-level modelling
+==dataflow modelling
+==behavioral modelling
+==tasks and functions
+==useful modelling techniques
+==timing and delays
+==switch-level modelling
+==user-defined primitives
+==programming language interface
+==logic synthesis with verilog HDL
+==strem
+===============Embedded Systems (without OS)
+==es
+comparison
+
+design practice: (robust, maintainable, flexible)
+  object-oriented
+  encapsulation
+  modularity
+  data abstraction
+
+embedded system considered equivalent to an object
+
+debugging
+  requires a cross compiler and cross debugger
+  JTAG (special processor interface)
+
+Resource considerations:
+  memory (RAM)
+  code space (ROM)
+  processor cycles (speed)
+  battery life (power savings)
+  processor peripherals
+
+
+==system architecture
+document system architecture
+
+
+Driver Model
+  spi.open()
+  spi_open()
+  SpiOpen(WITH_LOCK)
+  spi.ioctl_changeFrequency(THIRTY_MHz)
+  SpiIoctl(kChangeFrequency, THIRTY_MHz)
+
+
+Hardware Interfaces
+  SPI
+Driver Interfaces  (Consistent interface for client)
+  Open
+  Close
+  Read
+  Write
+  IOCTL
+Adaptee
+  I2C
+Adapter (Consistent interface for client)
+  Open
+  Close
+  Read
+  Write
+  IOCTL
+
+
+x
+
+
+x
+==integration
+hardware/software integration
+==outputs, inputs, timers
+
+==task maangements
+interrupts
+==communcating with peripherals
+UART, SSP, SPI, I2C, USB
+networking
+bit-bang
+parallel buses
+==updating code
+interal bootloaders
+custom solution
+==optimize
+reducing consumption of RAM, code space, processor cycles
+==math
+
+
+
+Identitying Fast and Slow Operations
+  compiler and processor
+  -           = fast
+  +           = fast
+  *           = fast
+  bit shift   = fast
+  /           = very slow
+  floating pt = extremely slow
+
+nth_pass_of_loop.c:
+  for (i=0; i<100; i++)
+    if ((i%10) == 0) {
+      printf("%d percent done.", i);
+    }
+  }
+
+replace the modulo math with a cheap (single instruction) bitwise logic operation
+  for (i=0; i<100; i++)
+    if (i & 7) { // this will print out every 8th pass
+      printf("%d percent done.", i);
+    }
+  }
+
+==reduce power consumption
+
+===============Embedded Systems
+Computer to Electrical:
+analog to digital converter (ADC) and digital to analog converter (DAC)
+
+EE Concepts:
+  Ohms Law,
+  LED voltage/current,
+  resistance measurement,
+  motor control
+
+Computer engineering concepts:
+  I/O drivers,
+  debugging,
+  stacks,
+  FIFO queues,
+  local variables,
+  interrupts.
+
+Hardware construction:
+  breadboard,
+  debugging(via multimeter/measure voltage)
+  debugging(during simulation stage)
+  verification(simulation and test run)
+
+Software:
+  C
+  Simulated then microcontroller
+
+Connect circuits to microcontroller board
+Write software to run on board
+===============ARM
+==Arm Systems and development
+==ARM
+==ARM embedded systems
+==ARM assembly language
+==First
+==Thumb instruction set
+==Assembly instructions
+==NEON
+==debugging
+==Optimized C
