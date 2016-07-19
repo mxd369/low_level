@@ -56,7 +56,20 @@ AC circuit analysis
 ==physical layout of kernal source
 
 ===============Embedded Linux
-
+==embedded linux
+==conccepts
+==hardware support
+==development tools
+==kernal consideration
+==root filesystem content
+==storage device manipulation
+==root filesystem setup
+==setting up bootloader
+==setting up networking services
+==debugging tools
+==real-time linux
+==xenomai real-time system
+==RT patch
 ===============Embedded Firmware
 UEFI
 BIOS
